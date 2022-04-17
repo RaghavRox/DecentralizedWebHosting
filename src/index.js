@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <div><FileUpload/></div>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+function FileUpload()
+{
+  const [sourceData, setSourceData] = useState("");
+
+  const calledAfterFileUpload  = (e) => {
+    alert(e.target.files[0].type);
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function () {
+      console.log(reader.result);//base64encoded string
+      setSourceData(reader.result);
+    };
+  }
+
+
+
+  return (
+    <div>
+      <input type ="file" id = "fileUpload" accept="text/html" onChange={calledAfterFileUpload}/>
+      <iframe src={sourceData}></iframe>
+    </div>
+  );
+}
+
+function renderWebsite(props){
+  return (
+    <iframe src={props.src}></iframe>
+  );
+}
