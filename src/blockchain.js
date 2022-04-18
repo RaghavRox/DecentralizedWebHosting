@@ -1,40 +1,93 @@
-// function FileUpload()
-// {
-//   const [sourceData, setSourceData] = useState("");
+import Web3 from "web3";
 
-//   const calledAfterFileUpload  = (e) => {
-//     alert(e.target.files[0].type);
-//     var reader = new FileReader();
-//     reader.readAsDataURL(e.target.files[0]);
-//     reader.onload = function () {
-//       console.log(reader.result);//base64encoded string
-//       setSourceData(reader.result);
-//     };
-//   }
+const web3 = new Web3(window.ethereum);
+const desiredChainId = 80001;
+const contractAddress = "0x77f8fff62C0981f34d1F295515bD3bd3d3f9e5a0";
+const contractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "websiteDataString",
+				"type": "string"
+			}
+		],
+		"name": "uploadWebsite",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "websiteData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 
-//   metamask();
+export function isMetaMaskInstalled() {
+    if(typeof window.ethereum === 'undefined') {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
+export async function getAccount() {
+    if(isMetaMaskInstalled()) {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        return window.ethereum.selectedAddress;
+    }
+    else {
+        window.location.reload();
+    }
+}
 
-//   return (
-//     <div>
-//       <input type ="file" id = "fileUpload" accept="text/html" onChange={calledAfterFileUpload}/>
-//       <iframe src={sourceData}></iframe>
-//     </div>
-//   );
-// }
+export async function isDesiredChain() {
+    const networkId = await web3.eth.net.getId();
+    console.log("networkId: " + networkId);
+    
+    if(networkId == desiredChainId) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
-// function renderWebsite(props){
-//   return (
-//     <iframe src={props.src}></iframe>
-//   );
-// }
+async function loadContract()
+{
+    if(await isDesiredChain()) {
+        const contract = await new web3.eth.Contract(contractABI, contractAddress);
+        return contract;
+    }
+    else{
+        window.location.reload();
+    }
+}
 
+export async function getWebsiteDataFromContract(websiteAddress)
+{
+    const contract = await loadContract();
+    console.log("data = "+await contract.methods.websiteData(websiteAddress).call());
+}
 
-// async function metamask()
-// {
-//   if (typeof window.ethereum !== 'undefined') {
-//     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-//     const account = accounts[0];
-//     console.log(account , typeof account);
-//   }
-// }
+export async function uploadWebsiteDataToContract(websiteDataString)
+{
+    const contract = await loadContract();
+    await contract.methods.uploadWebsite(websiteDataString).send({from: await getAccount()});
+}
