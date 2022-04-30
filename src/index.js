@@ -133,7 +133,7 @@ function SearchBar(){
         <button type="submit" onClick={onButtonClick} className="srchbutton"><i className="fa fa-search"></i></button>
       
       <p id="text">To upload your website scrolldown.</p>
-       <iframe src = {htmlDataURL}></iframe>
+       <iframe src = {htmlDataURL} id="ifrm" width="720px" height="590px"></iframe>
     </div>
   )
 }

@@ -187,6 +187,11 @@ code {
    color: white;
  }
 
+ #ifrm {
+  margin-left: 50%;
+  margin-top: -23%;
+ }
+
  @font-face {
   font-family: 'Sundaycoffee';
   src: local('Sundaycoffee'), url(./fonts/QabilFreeTrial-6Ydv1.otf) format('truetype');
