@@ -172,7 +172,7 @@ function Upload(){
         <input type="file" onChange={HandleFileInput} className="upright" id="search" placeholder="upload your website file" accept="text/html" style={{display:'none'}}></input>
       </label>
      
-      <div id="text2">something<br></br>about<br></br>the<br></br>dumb<br></br>nub<br></br>site<br></br><br></br><br></br><br></br><br></br>.</div>
+      <div id="text2"><br></br>At present we only support single html file. In order to package<br></br>your website into single html file use tools like gulp.js <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>.</div>
     </div>
   )
 }
