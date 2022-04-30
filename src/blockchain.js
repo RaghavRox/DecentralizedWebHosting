@@ -61,7 +61,7 @@ export async function isDesiredChain() {
     const networkId = await web3.eth.net.getId();
     console.log("networkId: " + networkId);
     
-    if(networkId == desiredChainId) {
+    if(networkId === desiredChainId) {
         return true;
     }
     else {
@@ -83,7 +83,9 @@ async function loadContract()
 export async function getWebsiteDataFromContract(websiteAddress)
 {
     const contract = await loadContract();
-    console.log("data = "+await contract.methods.websiteData(websiteAddress).call());
+    let WebsiteData = await contract.methods.websiteData(websiteAddress).call()
+    console.log("data = "+ WebsiteData);
+    return WebsiteData;
 }
 
 export async function uploadWebsiteDataToContract(websiteDataString)
